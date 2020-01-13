@@ -13,3 +13,4 @@ Includes custom filters for specific posts, pages or tags.
 - Automatic classes for each page and each post so it is possible to target through CSS even a specific post.
 
 - Super fast database queries, tested in web sites with over 30.000 posts.
+
