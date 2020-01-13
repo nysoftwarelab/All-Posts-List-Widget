@@ -37,6 +37,12 @@ class All_Posts_List_Widget extends WP_Widget
         //echo '<pre>';
         //print_r($instance);
         //echo '</pre>';
+        if (empty( $instance['title_html_tag'] )){  $instance['title_html_tag'] = "h1"; }
+        if (empty( $instance['posts_per_page'] )){  $instance['posts_per_page'] = 6; }
+        if (empty( $instance['columns'] )){ $instance['columns']=3; }
+        if (empty( $instance['order_by'] )){ $instance['order_by']="date"; }
+        if (empty( $instance['order'] )){ $instance['order']="ASC"; }
+        
         $paged = 1;
         if ( get_query_var( 'paged' ) ) { 
             $paged = get_query_var( 'paged' ); 
@@ -60,10 +66,6 @@ class All_Posts_List_Widget extends WP_Widget
             'offset'=> $offset,
         );
         $wp_posts = new WP_Query($args);
-
-        //if (!empty($instance['title'])) {
-        //    echo $args['before_title'] . apply_filters('widget_title', $instance['title']) . $args['after_title'];
-        //}
 
         $slug = basename(get_permalink());
 
