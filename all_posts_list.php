@@ -3,16 +3,15 @@
   *  Plugin Name: All Posts List Widget
   *  Plugin URI:
   *  Description : Custom Widget for All Posts
-  *  Version: 1.0.0
+  *  Version: 1.0.0.1
   *  Author: Kostas Dakanalis
   *  Author URI: 
   *  Text Domain: all-posts-list-widget
   *  Domain Path /languages
   * @package    All_Posts_List_Widget
-  * @since      0.1
   * @author     Kostas Dakanalis
   * @copyright  Copyright (c) 2020
-  * @license    http://www.gnu.org/licenses/gpl-2.0.html
+  * @license    https://www.gnu.org/licenses/gpl-3.0.en.html
 */
 
 defined( 'ABSPATH' ) or die( );
@@ -22,7 +21,7 @@ class APLW_Widget{
         // Set the constants needed by the plugin.
 		add_action( 'plugins_loaded', array( &$this, 'constants' ), 1 );
 
-		// Internationalize the text strings used.
+		// Internationalize the text strings used. - TODO
 		//add_action( 'plugins_loaded', array( &$this, 'i18n' ), 2 );
 
 		// Load the functions files.
@@ -37,10 +36,7 @@ class APLW_Widget{
         // Load the admin style for elementor
         add_action('elementor/editor/before_enqueue_scripts', function() {
             $this->admin_style();
-        });
-		// Register new image size.
-        //add_action( 'init', array( &$this, 'register_image_size' ) );
-        
+        });       
     }
 
     public function constants() {
@@ -71,10 +67,10 @@ class APLW_Widget{
     }
     
     public function includes() {
-		//require_once( APLW_INCLUDES . 'resizer.php' );
-		//require_once( APLW_INCLUDES . 'functions.php' );
-		//require_once( APLW_INCLUDES . 'shortcode.php' );
-		//require_once( APLW_INCLUDES . 'helpers.php' );
+		//require_once( APLW_INCLUDES . 'resizer.php' ); - TODO
+		//require_once( APLW_INCLUDES . 'functions.php' ); - TODO
+		//require_once( APLW_INCLUDES . 'shortcode.php' ); - TODO
+		//require_once( APLW_INCLUDES . 'helpers.php' ); - TODO
     }
     
     public function admin_style() {

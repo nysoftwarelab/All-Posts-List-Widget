@@ -28,8 +28,7 @@
 .aplw-width-100 {width: 100%;}
 
 .aplw-post-image-wrap{ 
-    /*text-align: center;
-    justify-content: space-evenly;*/
+    /* custom code */
 }
 
 .aplw-columns-1, .aplw-columns-2, .aplw-columns-3, .aplw-columns-4 { display: flex; flex-wrap: wrap; }
