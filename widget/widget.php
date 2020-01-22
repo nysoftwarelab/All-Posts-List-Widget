@@ -76,7 +76,8 @@ class All_Posts_List_Widget extends WP_Widget
         }
 
         // ======================================================= Start
-        echo $args['before_widget'];
+        if (isset($args['before_widget'])){ echo $args['before_widget']; }
+        
         echo '<div class="aplw-page-' . $slug . $columns.'">';
 
         while ($wp_posts->have_posts()): $wp_posts->the_post();
@@ -161,7 +162,8 @@ class All_Posts_List_Widget extends WP_Widget
         wp_reset_postdata();
 
         echo '</div>';
-        echo $args['after_widget'];
+        if (isset($args['after_widget'])){ echo $args['after_widget']; }
+        
         // ======================================================= End
     }
 
