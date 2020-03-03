@@ -9,7 +9,7 @@ Includes custom filters for specific posts, pages or tags.
 
 - It provides ordering by Standard WordPress fields or any ACF field.
 
-- It works on any template and its fully compatible with Elementror
+- It works on any template and its fully compatible with Elementor
 
 - It builds a nice structure with detailed classes so anyone can target any element through CSS classes.
 
