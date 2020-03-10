@@ -187,7 +187,7 @@ foreach ( $default_image_sizes as $size ) {
         name="<?php echo $this->get_field_name( 'show_date_format' ); ?>" 
         type="text" 
         value="<?php echo esc_attr( $show_date_format ); ?>"/>
-    <label for="<?php echo $this->get_field_id( 'show_date_format' ); ?>"><?php _e( 'Date Format', APLW_TEXT_DOMAIN ); ?></label>
+    <label for="<?php echo $this->get_field_id( 'show_date_format' ); ?>"><?php _e( 'Date Format, Example : <small><i>Date : {F j, Y}</i></small>', APLW_TEXT_DOMAIN ); ?></label>
 </p>
 <p>
     <input id="<?php echo $this->get_field_id( 'show_author' ); ?>" 
