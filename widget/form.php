@@ -18,6 +18,7 @@ $meta_pos = !empty( $instance['meta_pos'] ) ? $instance['meta_pos'] : esc_html__
 $meta_align = !empty( $instance['meta_align'] ) ? $instance['meta_align'] : esc_html__( 'aplw-left', APLW_TEXT_DOMAIN );
 
 $show_date = !empty( $instance['show_date'] ) ? $instance['show_date'] : false;
+$show_date_format = !empty( $instance['show_date_format'] ) ? $instance['show_date_format'] : esc_html__( 'Date : {F j, Y}', APLW_TEXT_DOMAIN );
 $show_author = !empty( $instance['show_author'] ) ? $instance['show_author'] : false;
 $show_categ = !empty( $instance['show_categ'] ) ? $instance['show_categ'] : false;
 $show_tags = !empty( $instance['show_tags'] ) ? $instance['show_tags'] : false;
@@ -180,6 +181,13 @@ foreach ( $default_image_sizes as $size ) {
         name="<?php echo $this->get_field_name( 'show_date' ); ?>" 
         type="checkbox" <?php checked( $show_date ); ?> />
     <label for="<?php echo $this->get_field_id( 'show_date' ); ?>"><?php _e( 'Show Date', APLW_TEXT_DOMAIN ); ?></label>
+</p>
+<p>
+    <input id="<?php echo $this->get_field_id( 'show_date_format' ); ?>" 
+        name="<?php echo $this->get_field_name( 'show_date_format' ); ?>" 
+        type="text" 
+        value="<?php echo esc_attr( $show_date_format ); ?>"/>
+    <label for="<?php echo $this->get_field_id( 'show_date_format' ); ?>"><?php _e( 'Date Format', APLW_TEXT_DOMAIN ); ?></label>
 </p>
 <p>
     <input id="<?php echo $this->get_field_id( 'show_author' ); ?>" 

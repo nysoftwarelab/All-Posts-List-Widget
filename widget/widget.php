@@ -102,7 +102,7 @@ class All_Posts_List_Widget extends WP_Widget
             $is_flex = "";
             if ($instance['featured_inline']=="aplw-inline"){ $is_flex="aplw-grid-item-flex"; }
 
-            $meta_block = $this->buildMetaBlock($link,
+            $meta_block = $this->aplw_buildMetaBlock($link,
                 $instance,
                 get_day_link(get_the_date("Y"), get_the_date("m"), get_the_date("d")),
                 get_the_date(),
@@ -166,12 +166,35 @@ class All_Posts_List_Widget extends WP_Widget
         
         // ======================================================= End
     }
-
-    public function buildMetaBlock($link, $instance, $date_link = '', $date_text = '', $author_link = '', $author = '', $cat = null, $tags = null, $comments = 0)
+    
+    public function aplw_explodeBetween ($d1, $d2, $text){
+        $ret = array();
+        $rm = "";
+        $alphas = explode($d1, $text);
+        foreach ($alphas as $k => $v) {
+            if ($k>0){
+                $p2 = mb_strpos($v, $d2);
+                $rt = mb_substr($v, 0, $p2);
+                $rm = $d1.$rt.$d2;
+                $exp = explode($rm,$text);
+                $ret = array ($exp[0], $rt, $exp[1]);
+            }
+        }
+        
+        return $ret;
+    }
+    
+    public function aplw_buildMetaBlock($link, $instance, $date_link = '', $date_text = '', $author_link = '', $author = '', $cat = null, $tags = null, $comments = 0)
     {
         $firstBuilded = false;
         $ret = '<div class="aplw-post-meta '.$instance['meta_align'].'">';
         if ($instance['show_date']) {
+            
+            //print_r(preg_split("/({|})/", $instance['show_date_format']));
+            //print_r($this->aplw_explodeBetween("{","}",$instance['show_date_format']));
+            $frmt = $this->aplw_explodeBetween("{","}",$instance['show_date_format']);
+            $date_text = $frmt[0].date($frmt[1], strtotime($date_text)).$frmt[2];
+            
             $ret .= '<a class="aplw-post-meta-item aplw-post-meta-date" href="' . $date_link . '" rel="bookmark">' . $date_text . '</a>';
             $firstBuilded = true;
         }
@@ -259,6 +282,8 @@ class All_Posts_List_Widget extends WP_Widget
         $instance['meta_align'] = (!empty($new_instance['meta_align'])) ? $new_instance['meta_align'] : 'left';
 
         $instance['show_date'] = (!empty($new_instance['show_date'])) ? (bool) $new_instance['show_date'] : false;
+        $instance['show_date_format'] = (!empty($new_instance['show_date_format'])) ? $new_instance['show_date_format'] : 'Date : {F j, Y}';
+        
         $instance['show_author'] = (!empty($new_instance['show_author'])) ? (bool) $new_instance['show_author'] : false;
         $instance['show_categ'] = (!empty($new_instance['show_categ'])) ? (bool) $new_instance['show_categ'] : false;
         $instance['show_tags'] = (!empty($new_instance['show_tags'])) ? (bool) $new_instance['show_tags'] : false;
