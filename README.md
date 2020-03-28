@@ -15,7 +15,7 @@ A big variety of features helps you to build any post list you like.
 
 - Choose posts per page, title tag, thumbnail size, featured image size and featured image display style
 
-- Select meta box possition and alignment
+- Select meta box position and alignment
 
 - Choose to show date with you own custom format if you like.
 
@@ -32,4 +32,3 @@ A big variety of features helps you to build any post list you like.
 - Automatic classes for each page and each post so it is possible to target through CSS even a specific post.
 
 - Super fast database queries, tested in web sites with over 80.000 posts.
-
