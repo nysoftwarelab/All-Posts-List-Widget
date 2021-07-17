@@ -66,6 +66,8 @@ class All_Posts_List_Widget extends WP_Widget
             'offset'=> $offset,
         );
         $wp_posts = new WP_Query($args);
+        
+        //print_r($args);
 
         $slug = basename(get_permalink());
 
@@ -80,12 +82,13 @@ class All_Posts_List_Widget extends WP_Widget
         
         echo '<div class="aplw-page-' . $slug . $columns.'">';
 
-        while ($wp_posts->have_posts()): $wp_posts->the_post();
-
+        while ($wp_posts->have_posts()): 
+            $wp_posts->the_post();
             $ID = get_the_ID();
             $link = get_permalink();
             $cat = get_the_category();
             $cat_css = "";
+
             foreach ($cat as $k => $v) {$cat_css .= "category-" . $v->slug . " ";}
             $status_css = "status-" . get_post_status();
             $title = get_the_title();
@@ -116,12 +119,13 @@ class All_Posts_List_Widget extends WP_Widget
             ?>
             <div class="aplw-grid-item aplw-post-item <?php echo $is_flex." post-" . $ID . " " . $type_css . " " . $format_css . " " . $status_css . " " . $cat_css; ?>">
                 <div class="aplw-frame">
+                    <!-- featured_image -->
                     <?php if ($instance['featured_image'] != "none") {
                         if ( has_post_thumbnail()){
-                            $th_id = get_post_thumbnail_id();
-                            $th_url = get_the_post_thumbnail_url();
-                            $alt = get_post_meta($th_id, '_wp_attachment_image_alt', true);
-                            $srcset = wp_get_attachment_image_srcset($th_id);
+                            //$th_id = get_post_thumbnail_id();
+                            //$th_url = get_the_post_thumbnail_url();
+                            //$alt = get_post_meta($th_id, '_wp_attachment_image_alt', true);
+                            //$srcset = wp_get_attachment_image_srcset($th_id);
                             ?>
                             <!-- featured image box -->
                             <div class="aplw-post-image-wrap <?php echo $instance['featured_image_percent']." ".$instance['featured_inline']; ?>">
@@ -130,30 +134,49 @@ class All_Posts_List_Widget extends WP_Widget
                                     <span class="aplw-post-image-overlay"></span>
                                 </a>
                             </div><?php
-                        }
-                    }?>
-                
-                    <div class="aplw-post-content <?php echo $instance['featured_inline']; ?>">
-                        <?php if ($instance['meta_pos'] == "Before Title") {echo $meta_block;}?> <!-- Meta tag box / before title -->
-                        <<?php echo $instance['title_html_tag'].' class="aplw-post-title '.$instance['title_align'].'"'; ?>> <!-- Title -->
-                            <a class="aplw-post-title-link" href="<?php echo get_permalink(); ?>"><?php echo $title; ?></a>
-                        </<?php echo $instance['title_html_tag']; ?>>
-                        <?php if ($instance['meta_pos'] == "After Title") {echo $meta_block;}?> <!-- Meta tag box / after title -->
-                        <?php if ($instance['show_excer']) {?> <!-- Excerpt -->
-                            <div class="aplw-post-excerpt <?php echo $instance['meta_align']; ?>">
-                                <?php echo get_the_excerpt(); ?>
-                            </div>
-                        <?php }?>
-
-                        <?php if ($instance['meta_pos'] == "After Excerpt") {echo $meta_block;}?> <!-- Meta tag box / after excerpt -->
-                        <?php if ($instance['show_button']) {?> <!-- Button -->
-                            <div class="alpw-post-read-more <?php echo $instance['button_align']; ?>">
-                                <a class="alpw-post-button" href="<?php echo get_permalink(); ?>">
-                                    <span class="alpw-post-button-text"><?php echo $instance['button_text']; ?></span>
+                        }else{
+                            if ($instance['featured_default']!='0'){
+                                $img = wp_get_attachment_image($instance['featured_default'], $instance['featured_image']);
+                                ?>
+                                <div class="aplw-post-image-wrap <?php echo $instance['featured_image_percent']." ".$instance['featured_inline']; ?>">
+                                <a class="aplw-post-image-link" href="<?php echo get_permalink(); ?>">
+                                    <?php echo $img; ?>
+                                    <span class="aplw-post-image-overlay"></span>
                                 </a>
-                            </div>
-                        <?php } ?>
-                    </div>
+                            </div><?php
+                            }
+                        }
+                    }
+                    
+                    if ($instance['post_style'] == 'default'){ ?>
+                        <div class="aplw-post-content <?php echo $instance['featured_inline']; ?>">
+                            <?php if ($instance['meta_pos'] == "Before Title") { echo $meta_block; }?> <!-- Meta tag box / before title -->
+                            <<?php echo $instance['title_html_tag'].' class="aplw-post-title '.$instance['title_align'].'"'; ?>> <!-- Title -->
+                                <a class="aplw-post-title-link" href="<?php echo get_permalink(); ?>"><?php echo $title; ?></a>
+                            </<?php echo $instance['title_html_tag']; ?>>
+                            <?php if ($instance['meta_pos'] == "After Title") { echo $meta_block; }?> <!-- Meta tag box / after title -->
+                            <?php if ($instance['show_excer']) {?> <!-- Excerpt -->
+                                <div class="aplw-post-excerpt <?php echo $instance['excer_align']; ?>">
+                                    <?php echo get_the_excerpt(); ?>
+                                </div>
+                            <?php }?>
+
+                            <?php if ($instance['meta_pos'] == "After Excerpt") {echo $meta_block;}?> <!-- Meta tag box / after excerpt -->
+                            <?php if ($instance['show_button']) { ?> <!-- Button -->
+                                <div class="alpw-post-read-more <?php echo $instance['button_align']; ?>">
+                                    <a class="alpw-post-button" href="<?php echo get_permalink(); ?>">
+                                        <span class="alpw-post-button-text"><?php echo $instance['button_text']; ?></span>
+                                    </a>
+                                </div>
+                            <?php } ?>
+                        </div><?php
+                    }
+                    if ($instance['post_style'] == 'content_only'){?>
+                        <div class="aplw-post-content <?php echo $instance['featured_inline']; ?>">
+                        <?php echo get_the_content(); ?>
+                        </div><?php
+                    }
+                    ?>
                 </div>
             </div>
             
@@ -188,6 +211,8 @@ class All_Posts_List_Widget extends WP_Widget
     {
         $firstBuilded = false;
         $ret = '<div class="aplw-post-meta '.$instance['meta_align'].'">';
+        
+        // Date
         if ($instance['show_date']) {
             
             //print_r(preg_split("/({|})/", $instance['show_date_format']));
@@ -198,11 +223,15 @@ class All_Posts_List_Widget extends WP_Widget
             $ret .= '<a class="aplw-post-meta-item aplw-post-meta-date" href="' . $date_link . '" rel="bookmark">' . $date_text . '</a>';
             $firstBuilded = true;
         }
+        
+        // Author
         if ($instance['show_author']) {
             if ($firstBuilded){ $ret .= '<span class="aplw-post-meta-divider"> / </span>'; }
             $ret .= '<a class="aplw-post-meta-item aplw-post-meta-author" href="' . $author_link . '" rel="bookmark">' . $author . '</a>';
             $firstBuilded = true;
         }
+
+        // Categ
         if ($instance['show_categ']) {
             if ($cat) {
                 if ($firstBuilded){ $ret .= '<span class="aplw-post-meta-divider"> / </span>'; }
@@ -214,6 +243,8 @@ class All_Posts_List_Widget extends WP_Widget
                 $firstBuilded = true;
             }
         }
+
+        // Tags
         if ($instance['show_tags']) {
             if ($tags) {
                 if ($firstBuilded){ $ret .= '<span class="aplw-post-meta-divider"> / </span>'; }
@@ -224,6 +255,9 @@ class All_Posts_List_Widget extends WP_Widget
                 $firstBuilded = true;
             }
         }
+
+
+        // Comments
         if ($instance['show_comm']) {
             if ($firstBuilded){ $ret .= '<span class="aplw-post-meta-divider"> / </span>'; }
             if ($comments == 0) {
@@ -269,6 +303,7 @@ class All_Posts_List_Widget extends WP_Widget
         $instance['specific_cats'] = $new_instance['specific_cats'];
         $instance['specific_type'] = (!empty($new_instance['specific_type'])) ? $new_instance['specific_type'] : 'post';
         
+        $instance['post_style'] = (!empty($new_instance['post_style'])) ? $new_instance['post_style'] : 'default';
         $instance['columns'] = (!empty($new_instance['columns'])) ? $new_instance['columns'] : '3';
         $instance['posts_per_page'] = (!empty($new_instance['posts_per_page'])) ? $new_instance['posts_per_page'] : '6';
         $instance['title_html_tag'] = (!empty($new_instance['title_html_tag'])) ? $new_instance['title_html_tag'] : 'h1';
@@ -277,7 +312,8 @@ class All_Posts_List_Widget extends WP_Widget
         $instance['featured_image'] = (!empty($new_instance['featured_image'])) ? $new_instance['featured_image'] : 'none';
         $instance['featured_image_percent'] = (!empty($new_instance['featured_image_percent'])) ? $new_instance['featured_image_percent'] : 'aplw-width-100';
         $instance['featured_inline'] = (!empty($new_instance['featured_inline'])) ? $new_instance['featured_inline'] : 'aplw-block';
-        
+        $instance['featured_default'] = (!empty($new_instance['featured_default'])) ? $new_instance['featured_default'] : '0';
+
         $instance['meta_pos'] = (!empty($new_instance['meta_pos'])) ? $new_instance['meta_pos'] : 'After Title';
         $instance['meta_align'] = (!empty($new_instance['meta_align'])) ? $new_instance['meta_align'] : 'left';
 
@@ -309,7 +345,7 @@ function aplw_cats_list()
 {
 
     // Arguments
-    $args = array('number' => 99);
+    $args = array('number' => 99,'hide_empty' => false,);
 
     // Allow dev to filter the arguments
     $args = apply_filters('aplw_cats_list_args', $args);

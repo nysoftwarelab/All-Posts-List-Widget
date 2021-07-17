@@ -5,6 +5,7 @@ $specific_tags = !empty( $instance['specific_tags'] ) ? $instance['specific_tags
 $specific_cats = !empty( $instance['specific_cats'] ) ? $instance['specific_cats'] : [];
 $specific_type = !empty( $instance['specific_type'] ) ? $instance['specific_type'] : esc_html__( 'post', APLW_TEXT_DOMAIN );
 
+$post_style = !empty( $instance['post_style'] ) ? $instance['post_style'] : esc_html__( 'default', APLW_TEXT_DOMAIN );
 $columns = !empty( $instance['columns'] ) ? $instance['columns'] : esc_html__( '3', APLW_TEXT_DOMAIN );
 $posts_per_page = !empty( $instance['posts_per_page'] ) ? $instance['posts_per_page'] : esc_html__( '6', APLW_TEXT_DOMAIN );
 $title_html_tag = !empty( $instance['title_html_tag'] ) ? $instance['title_html_tag'] : esc_html__( 'h1', APLW_TEXT_DOMAIN );
@@ -13,6 +14,7 @@ $title_align = !empty( $instance['title_align'] ) ? $instance['title_align'] : e
 $featured_image = !empty( $instance['featured_image'] ) ? $instance['featured_image'] : esc_html__( 'none', APLW_TEXT_DOMAIN );
 $featured_image_percent = !empty( $instance['featured_image_percent'] ) ? $instance['featured_image_percent'] : esc_html__( 'aplw-width-100', APLW_TEXT_DOMAIN );
 $featured_inline = !empty( $instance['featured_inline'] ) ? $instance['featured_inline'] : esc_html__( 'aplw-block', APLW_TEXT_DOMAIN );
+$featured_default = !empty( $instance['featured_default'] ) ? $instance['featured_default'] : esc_html__( '0', APLW_TEXT_DOMAIN );
 
 $meta_pos = !empty( $instance['meta_pos'] ) ? $instance['meta_pos'] : esc_html__( 'After Title', APLW_TEXT_DOMAIN );
 $meta_align = !empty( $instance['meta_align'] ) ? $instance['meta_align'] : esc_html__( 'aplw-left', APLW_TEXT_DOMAIN );
@@ -45,6 +47,14 @@ foreach ( $default_image_sizes as $size ) {
 //print_r($image_sizes);
 
 ?>
+<p>
+    <label for="<?php echo $this->get_field_id( 'specific_type' ); ?>"><?php esc_attr_e( 'Post Type:', APLW_TEXT_DOMAIN ); ?></label>
+    <select class="widefat" id="<?php echo $this->get_field_id( 'specific_type' ); ?>" name="<?php echo $this->get_field_name( 'specific_type' ); ?>" style="width:100%;">
+        <?php foreach (aplw_post_types() as $k=>$ptype){?>
+            <option value="<?php echo $k; ?>" <?php selected( $specific_type, $k ); ?>><?php echo $k; ?></option>
+        <?php } ?>
+    </select>
+</p>
 <p>
     <label for="<?php echo esc_attr( $this->get_field_id( 'specific_posts' ) ); ?>"><?php esc_attr_e( 'Specific Posts:', APLW_TEXT_DOMAIN ); ?></label>
     <input class="widefat" 
@@ -80,15 +90,14 @@ foreach ( $default_image_sizes as $size ) {
         <?php endforeach; ?>
     </ul>
 </p>
+<hr/>
 <p>
-    <label for="<?php echo $this->get_field_id( 'specific_type' ); ?>"><?php esc_attr_e( 'Post Type:', APLW_TEXT_DOMAIN ); ?></label>
-    <select class="widefat" id="<?php echo $this->get_field_id( 'specific_type' ); ?>" name="<?php echo $this->get_field_name( 'specific_type' ); ?>" style="width:100%;">
-        <?php foreach (aplw_post_types() as $k=>$ptype){?>
-            <option value="<?php echo $k; ?>" <?php selected( $specific_type, $k ); ?>><?php echo $k; ?></option>
-        <?php } ?>
+    <label for="<?php echo $this->get_field_id( 'post_style' ); ?>"><?php esc_attr_e( 'Post Layout:', APLW_TEXT_DOMAIN ); ?></label>
+    <select class="widefat" id="<?php echo $this->get_field_id( 'post_style' ); ?>" name="<?php echo $this->get_field_name( 'post_style' ); ?>" style="width:100%;">
+        <option value="default" <?php selected( $post_style, 'default' ); ?>><?php esc_attr_e( 'Default', APLW_TEXT_DOMAIN ) ?></option>
+        <option value="content_only" <?php selected( $post_style, 'content_only' ); ?>><?php esc_attr_e( 'Content Only', APLW_TEXT_DOMAIN ) ?></option>
     </select>
 </p>
-<hr/>
 <p>
     <label for="<?php echo $this->get_field_id( 'columns' ); ?>"><?php esc_attr_e( 'Layout Columns:', APLW_TEXT_DOMAIN ); ?></label>
     <input class="widefat" 
@@ -126,6 +135,7 @@ foreach ( $default_image_sizes as $size ) {
         <option value="aplw-right" <?php selected( $title_align, 'aplw-right' ); ?>><?php esc_attr_e( 'Right', APLW_TEXT_DOMAIN ) ?></option>
     </select>
 </p>
+<hr/>
 <p>
     <label for="<?php echo $this->get_field_id( 'featured_image' ); ?>"><?php esc_attr_e( 'Featured Image:', APLW_TEXT_DOMAIN ); ?></label>
     <select class="widefat" id="<?php echo $this->get_field_id( 'featured_image' ); ?>" name="<?php echo $this->get_field_name( 'featured_image' ); ?>" style="width:100%;">
@@ -158,6 +168,14 @@ foreach ( $default_image_sizes as $size ) {
         <option value="aplw-inline" <?php selected( $featured_inline, 'aplw-inline' ); ?>><?php esc_attr_e( 'Inline', APLW_TEXT_DOMAIN ) ?></option>
         <option value="aplw-cell" <?php selected( $featured_inline, 'aplw-cell' ); ?>><?php esc_attr_e( 'Table Cell', APLW_TEXT_DOMAIN ) ?></option>
     </select>
+</p>
+<p>
+    <label for="<?php echo $this->get_field_id( 'featured_default' ); ?>"><?php esc_attr_e( 'Default image ID:', APLW_TEXT_DOMAIN ); ?></label>
+    <input class="widefat" 
+        id="<?php echo $this->get_field_id( 'featured_default' ); ?>" 
+        name="<?php echo $this->get_field_name( 'featured_default' ); ?>" 
+        type="number" step="1" min="0" 
+        value="<?php echo (int)( $featured_default ); ?>" />
 </p>
 <hr/>
 <p>

@@ -1,6 +1,6 @@
 # All-Posts-List-Widget
 
-Version 1.0.0.1
+Version 1.0.1.1
 
 Wordpress - All Posts List Widget
 

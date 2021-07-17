@@ -3,14 +3,14 @@
   *  Plugin Name: All Posts List Widget
   *  Plugin URI:
   *  Description : Custom Widget for All Posts
-  *  Version: 1.0.0.1
+  *  Version: 1.0.1.1
   *  Author: Kostas Dakanalis
   *  Author URI: 
   *  Text Domain: all-posts-list-widget
   *  Domain Path /languages
   * @package    All_Posts_List_Widget
   * @author     Kostas Dakanalis
-  * @copyright  Copyright (c) 2020
+  * @copyright  Copyright (c) Jul 17 2021
   * @license    https://www.gnu.org/licenses/gpl-3.0.en.html
 */
 
